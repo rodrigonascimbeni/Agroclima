@@ -1,5 +1,7 @@
 <?php
 
+
+
 //Inclue conexão com banco de dados
   include ('conexao.php');
 
@@ -58,6 +60,32 @@
 		// Código de Resposta Headers 200
 		http_response_code(200);
 		
+		
+		//Envia leituras para The WeatherUnderGround via cURL
+				
+		
+		$post = [
+			'ID' => $_GET['ID'],
+			'PASSWORD' => $_GET['PASSWORD'],
+			'dateutc'   => $_GET['dateutc'],
+			'winddir'=> $_GET['winddir'],
+			'windspeedmph' => $_GET['windspeedmph'],
+			'windgustmph' => $_GET['windgustmph'],
+			'tempf' => $_GET['tempf'],
+			'rainin' => $_GET['rainin'],
+			'baromin' => $_GET['baromin'],
+			'dewptf' => $_GET['dewptf'],
+			'humidity' => $_GET['humidity'],
+			'action' => 'updateraw',
+			];
+		
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, 'https://rtupdate.wunderground.com/weatherstation/updateweatherstation.php');
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($post));
+$response = curl_exec($ch);
+var_export($response);
+		
 					
 	  }else {
 			//Fecha cone~xao com banco de dados
@@ -72,13 +100,5 @@
 	}
 
 
-
-	
-
- 
-	    
-	    
-	    
-   
 
 ?>
